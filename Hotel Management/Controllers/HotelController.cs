@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Hotel_Management.Controllers
 {
     [Route("hotel")]
+    //Controller
     public class HotelController : Controller
     {
         private readonly IGuestRepository repository;
