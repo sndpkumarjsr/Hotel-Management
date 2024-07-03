@@ -25,6 +25,16 @@ namespace Hotel_Management.Repository
             connection.Execute("SPADDGUEST", parameters,commandType: CommandType.StoredProcedure);
         }
 
+        public int AuthUser(string email, string password)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("Email",email);
+            parameters.Add("Password",password);
+            parameters.Add("returnval", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            connection.Query<int>("AuthUser",parameters,commandType: CommandType.StoredProcedure);
+            return parameters.Get<int>("returnval");
+        }
+
         public List<Guest> GetGuests(int id)
         {
             DynamicParameters parameters = new DynamicParameters();
