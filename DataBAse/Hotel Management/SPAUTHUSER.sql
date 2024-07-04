@@ -18,11 +18,10 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE AuthUser
+Create PROCEDURE AuthUser
 	-- Add the parameters for the stored procedure here
 	@Email varchar(100),
-	@Password varchar(100),
-	@returnval int output
+	@Password varchar(100)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -30,29 +29,13 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	--@returnval = 1  // email and password confirm
-	--@returnval = 0 // either email or password is worng
-	--@returnval = -1 // exception
 	BEGIN TRY
     IF EXISTS (SELECT 1 FROM guest WHERE email = @Email)
     BEGIN
-        IF EXISTS (SELECT 1 FROM guest WHERE email = @Email AND password = @Password)
-        BEGIN
-            SET @returnval = 1
-			select guest_id,first_name,last_name,gender,email,phone_number,address from guest where email = @Email
-        END
-        ELSE
-        BEGIN
-            SET @returnval = 0
-        END
-    END
-    ELSE
-    BEGIN
-        SET @returnval = 0
+			select guest_id,first_name,last_name,gender,email,phone_number,address from guest where email = @Email and password = @Password
     END
 END TRY
 BEGIN CATCH
-    SET @returnval = -1
 END CATCH
 
 END

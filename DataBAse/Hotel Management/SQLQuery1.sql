@@ -150,9 +150,8 @@ exec SPUPDATETODECREMENTTOTALNUMROOM 'Quad Room',2
 exec SPUPDATETOTALNUMROOM 'Quad Room',2
 exec ADDADMINRESERVATION 
 
-declare @result int;
-exec AuthUser 'yogesh1@gmail.com', 'Qwerty',@result out
-select @result
+exec AuthUser 'yogesh1@gmail.com', 'Qwerty'
+
 
 select * from guest
 select * from reservation
