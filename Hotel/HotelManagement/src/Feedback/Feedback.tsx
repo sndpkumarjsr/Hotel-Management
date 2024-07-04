@@ -13,7 +13,7 @@ const Feedback = () => {
     const loction = useLocation()
     useEffect(()=>{
       if(loction.state){
-        setUser(loction.state[0])
+        setUser(loction.state)
         const newDate = new Date();
         const recentDate = newDate.getFullYear()+"-"+(newDate.getMonth()+1)+"-"+newDate.getDate()
         setDate(recentDate)

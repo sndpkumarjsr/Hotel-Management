@@ -20,7 +20,6 @@ const Login : React.FC = () => {
     const [password, setPassword] = useState('');
     const [userType, setUserType] = useState<'user' | 'admin'>('user');
     const [userDetails,setUserDetails] = useState<any[]>([])
-    const [filterData,setFilterData] = useState<any[]>([])
     const location = useLocation()
     const navigate = useNavigate()
     useEffect(()=>{
@@ -39,19 +38,14 @@ const Login : React.FC = () => {
     }
     
     const userAuth = () => {
-        axios.get('https://localhost:44343/hotel/getguest?id=0')
+        axios.get(`https://localhost:44343/hotel/authuser?Email=${email}&Password=${password}`)
         .then((resp)=>{
-            setUserDetails(resp.data) 
+            if(resp.data){
+                navigate('/home',{state:resp.data})
+            }else{
+                alert('Email and Password is incorrect')
+            }    
         })
-        const filter = userDetails.filter((item)=>{
-            return item.email === email && item.password === password
-        })
-        if(filter.length === 1){
-            navigate('/home',{state:filter})
-        }else{
-            alert('Email and Password is incorrect')
-        }
-        
     };
 
     const adminAuth = () => {

@@ -32,7 +32,7 @@ const Booking = () => {
 
     useEffect(()=>{
         if(location.state){
-            setUser(location.state[0])
+            setUser(location.state)
         }
     },[location])
 

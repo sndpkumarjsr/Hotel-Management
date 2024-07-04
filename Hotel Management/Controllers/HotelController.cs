@@ -183,9 +183,9 @@ namespace Hotel_Management.Controllers
         {
             return roomRateRepository.GetRooms(room_type,check_in_date,check_out_date);
         }
-        [HttpPost]
+        [HttpGet]
         [Route("authuser")]
-        public int AuthUsers(String Email, string Password)
+        public Guest AuthUsers(String Email, string Password)
         {
             return repository.AuthUser(Email, Password);
         } 

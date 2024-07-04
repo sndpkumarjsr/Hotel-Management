@@ -27,8 +27,8 @@ const GuestBill = () => {
   }
     useEffect(()=>{
         if(location.state){
-            setUser(location.state[0])
-            setGuestId(location.state[0].guest_id)  
+            setUser(location.state)
+            setGuestId(location.state.guest_id)  
         }
         
     },[])

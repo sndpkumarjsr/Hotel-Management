@@ -7,6 +7,6 @@ namespace Hotel_Management.Interface
          List<Guest> GetGuests(int id);
          void AddGuest(Guest guest);
         void UpdatePassword(string email, long mobile, string password);
-        int AuthUser(string email, string password);
+        Guest AuthUser(string email, string password);
     }
 }
