@@ -40,11 +40,13 @@ const Login : React.FC = () => {
     const userAuth = () => {
         axios.get(`https://localhost:44343/hotel/authuser?Email=${email}&Password=${password}`)
         .then((resp)=>{
-            if(resp.data){
+            console.log(resp.status,'status');
+            console.log(resp.data,'data');
+            if(resp.status == 200 && resp.data)
                 navigate('/home',{state:resp.data})
-            }else{
-                alert('Email and Password is incorrect')
-            }    
+            else
+                alert('Email and Password is Incorrect')
+               
         })
     };
 

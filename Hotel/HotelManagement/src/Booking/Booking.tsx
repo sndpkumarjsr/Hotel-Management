@@ -39,7 +39,10 @@ const Booking = () => {
     function handleBooking(){
       axios.get(`https://localhost:44343/hotel/getroomdetails?room_type=${roomType}&check_in_date=${checkInDate}&check_out_date=${checkOutDate}`)
     .then((resp)=>{
-      setAvailabilty(resp.data)
+      if(resp.status == 200 && resp.data)
+          setAvailabilty(resp.data)
+      else
+        alert('Server Error 404 Not Found')
     })
     const checkOutDateObj = new Date(checkOutDate);
     const checkInDateObj = new Date(checkInDate);

@@ -10,7 +10,10 @@ const SecurityLog = () => {
     useEffect(()=>{
         axios.get('https://localhost:44343/hotel/getsecuritylog')
         .then((resp)=>{
-         setSecurityLog(resp.data)   
+            if(resp.status == 200 && resp.data)
+                setSecurityLog(resp.data) 
+            else
+                alert("Server Error 404 Not Found")  
         })
     },[])
     function recordsByGuestId(){

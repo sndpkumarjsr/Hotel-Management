@@ -171,23 +171,50 @@ namespace Hotel_Management.Controllers
 
         [HttpGet]
         [Route("getsecuritylog")]
-        public List<SecurityLog> GetSecurityLog()
+        public IActionResult GetSecurityLog()
         {
-            var result = securityLogRepository.GetSecurityLogList();
-            return result;
+            try
+            {
+                List<SecurityLog> result = securityLogRepository.GetSecurityLogList();
+                if (result == null) return NotFound("");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet]
         [Route("getroomdetails")]
-        public List<RoomRate> GetRoomRate(string room_type, string check_in_date, string check_out_date)
+        public IActionResult GetRoomRate([FromQuery]string room_type, [FromQuery]string check_in_date, [FromQuery]string check_out_date)
         {
-            return roomRateRepository.GetRooms(room_type,check_in_date,check_out_date);
+            try
+            {
+                List<RoomRate> roomRates = roomRateRepository.GetRooms(room_type, check_in_date, check_out_date);
+                if (roomRates.Count == 0) return NotFound("Rooms Not Availables");
+                return Ok(roomRates);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,ex.Message);
+            }
         }
         [HttpGet]
         [Route("authuser")]
-        public Guest AuthUsers(String Email, string Password)
+        public IActionResult AuthUsers([FromQuery]string Email, [FromQuery]string Password)
         {
-            return repository.AuthUser(Email, Password);
+            try
+            {
+                Guest guest = repository.AuthUser(Email, Password);
+                if (guest == null) return NotFound("User not Found");
+                return Ok(guest);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
         } 
 
     }
