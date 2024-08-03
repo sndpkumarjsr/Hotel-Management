@@ -27,90 +27,121 @@ namespace Hotel_Management.Controllers
 
         [HttpGet]
         [Route("getguest")]
-        public List<Guest> GetGuests(int? id = 0)
+        public IActionResult GetGuests(int? id = 0)
         {
-            var result = repository.GetGuests((int)id);
-            return result;
+            try
+            {
+                var result = repository.GetGuests((int)id);
+                if (result == null) return BadRequest();
+                return Ok(result);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         [Route("addupdateguest")]
         public IActionResult AddUpdate([FromForm] Guest guest)
         {
-            if (guest != null)
+            try
             {
-                repository.AddGuest(guest);
-                return Json(new { success = true, Message = "Add or Update the Guest" });
+                if (guest != null)
+                {
+                    repository.AddGuest(guest);
+                    return Ok(Json(new { success = true, Message = "Add or Update the Guest" }));
+                }
+                return BadRequest(Json(new { success = false, Message = "Invalid Guest" }));
             }
-            else
+            catch (Exception e)
             {
-                return Json(new { success = false, Message = "Invalid Guest" });
+                return StatusCode(500, e.Message);
             }
-
         }
 
         [HttpPost]
         [Route("updatepassword")]
         public IActionResult UpdatePassword(string email, long mobile,  string password)
         {
-            if (email != null && password != null )
+            try
             {
-                repository.UpdatePassword(email, mobile, password);
-                return Json(new { success = true,Message = "Password Changed"});
-            }
-            else
+                if (email != null && password != null)
+                {
+                    repository.UpdatePassword(email, mobile, password);
+                    return Ok(Json(new { success = true, Message = "Password Changed" }));
+                }
+                return BadRequest(Json(new { success = false, Message = "Invalid data" }));
+            }catch (Exception e)
             {
-                return Json(new { success = false, Message = "Invalid data" });
+                return StatusCode(500, e.Message);
             }
         }
 
         [HttpGet]
         [Route("getfeedback")]
-        public List<Feedback> GetFeedbacks(int? id = 0)
+        public IActionResult GetFeedbacks(int? id = 0)
         {
-            var result = feedbackRepository.GetFeedbacks((int)id);
-            return result;
+            try
+            {
+                var result = feedbackRepository.GetFeedbacks((int)id);
+                if(result == null) return BadRequest();
+                return Ok(result);
+            }catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
 
         [HttpPost]
         [Route("addfeedback")]
         public IActionResult AddFeedback([FromForm] Feedback feedback)
         {
-            if (feedback != null)
+            try
             {
-                feedbackRepository.AddFeedback(feedback);
-                return Json(new { success = true, Message = "Add Feedback" });
-            }
-            else
+                if (feedback != null)
+                {
+                    feedbackRepository.AddFeedback(feedback);
+                    return Ok(Json(new { success = true, Message = "Add Feedback" }));
+                }
+                return BadRequest(Json(new { success = false, Message = "Invalid Feedback" }));
+            }catch(Exception e)
             {
-                return Json(new { success = false, Message = "Invalid Feedback" });
+                return StatusCode(500, e.Message);
             }
 
         }
 
-
         [HttpGet]
         [Route("getreservationbyguestid")]
-        public List<Reservation> GetReservationbyGuestID(int id)
+        public IActionResult GetReservationbyGuestID(int id)
         {
-            var result = reservationRepository.GetReservationByGuestId(id);
-            return result;
+            try
+            {
+                var result = reservationRepository.GetReservationByGuestId(id);
+                if (result != null) return Ok(result);
+                return BadRequest();
+            }catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
 
         [HttpPost]
         [Route("addupdatereservation")]
         public IActionResult AddUpdateReservation([FromForm] Reservation reservation)
         {
-            if (reservation != null)
+            try
             {
-                reservationRepository.AddUpdateReservation(reservation);
-                return Json(new { success = true, Message = "Add or Update Reservation" });
-            }
-            else
+                if (reservation != null)
+                {
+                    reservationRepository.AddUpdateReservation(reservation);
+                    return Ok(Json(new { success = true, Message = "Add or Update Reservation" }));
+                }
+                return BadRequest(Json(new { success = false, Message = "Invalid Reservation" }));
+            }catch(Exception e)
             {
-                return Json(new { success = false, Message = "Invalid Reservation" });
+                return StatusCode(500, e.Message);
             }
-
         }
 
         [HttpPost]
@@ -121,52 +152,48 @@ namespace Hotel_Management.Controllers
             {
                 if (reservation != null && guest != null)
                 {
-                    // Assuming reservationRepository is an instance of a repository class
                     reservationRepository.AddAdminReservation(guest, reservation);
-
-                    // Return a JSON response indicating success
-                    return Json(new { success = true, Message = "Reservation added successfully." });
+                    return Ok(Json(new { success = true, Message = "Reservation added successfully." }));
                 }
-                else
-                {
-                    // Return a JSON response indicating failure due to invalid reservation
-                    return Json(new { success = false, Message = "Invalid reservation." });
-                }
+                return BadRequest(Json(new { success = false, Message = "Invalid reservation." }));
             }
             catch (Exception ex)
             {
-                // Log the exception for debugging purposes
-                Console.WriteLine("An error occurred while adding admin reservation: " + ex.Message);
-                // Return a JSON response indicating an internal server error
                 return StatusCode(500, new { success = false, Message = "Internal Server Error." });
             }
         }
 
-
-
-
         [HttpGet]
         [Route("getrevenuebyguestid")]
-        public List<Revenue> GetRevenueByGuestId(int? id=0)
+        public IActionResult GetRevenueByGuestId(int? id=0)
         {
-            var result = revenueRepository.GetRevenuesByGuestId((int)id);
-            return result;
+            try
+            {
+                var result = revenueRepository.GetRevenuesByGuestId((int)id);
+                if (result == null) return BadRequest();
+                return Ok(result);
+            }catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpPost]
         [Route("addupdatereveneue")]
         public IActionResult AddUpdateRevenue([FromForm] Revenue revenue)
         {
-            if (revenue != null)
+            try
             {
-                revenueRepository.AddUpdateRevenue(revenue);
-                return Json(new { success = true, Message = "Add or Update Revenue" });
-            }
-            else
+                if (revenue != null)
+                {
+                    revenueRepository.AddUpdateRevenue(revenue);
+                    return Ok(Json(new { success = true, Message = "Add or Update Revenue" }));
+                }
+                    return BadRequest(Json(new { success = false, Message = "Invalid Revenue" }));
+            }catch (Exception ex)
             {
-                return Json(new { success = false, Message = "Invalid Revenue" });
+                return StatusCode(500, ex.Message);
             }
-
         }
 
         [HttpGet]
@@ -175,7 +202,7 @@ namespace Hotel_Management.Controllers
         {
             try
             {
-                List<SecurityLog> result = securityLogRepository.GetSecurityLogList();
+                var result = securityLogRepository.GetSecurityLogList();
                 if (result == null) return NotFound("");
                 return Ok(result);
             }
@@ -191,7 +218,7 @@ namespace Hotel_Management.Controllers
         {
             try
             {
-                List<RoomRate> roomRates = roomRateRepository.GetRooms(room_type, check_in_date, check_out_date);
+                var roomRates = roomRateRepository.GetRooms(room_type, check_in_date, check_out_date);
                 if (roomRates.Count == 0) return NotFound("Rooms Not Availables");
                 return Ok(roomRates);
             }
@@ -206,7 +233,7 @@ namespace Hotel_Management.Controllers
         {
             try
             {
-                Guest guest = repository.AuthUser(Email, Password);
+                var guest = repository.AuthUser(Email, Password);
                 if (guest == null) return NotFound("User not Found");
                 return Ok(guest);
             }

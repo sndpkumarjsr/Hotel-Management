@@ -1,5 +1,4 @@
 
-import { useLocation } from 'react-router-dom'
 import  { useState, useEffect } from 'react';
 import Rating from '@mui/material/Rating';
 import axios from 'axios';
@@ -55,12 +54,18 @@ const Home = () => {
   }
 
   const handleCheckAvailability = () => {
+    if(!departureDate) alert('Please Select a Departure Date')
+    if(!roomType) alert('Select Room Type')
+    if( arrivalDate && departureDate && roomType){
     axios.get(`https://localhost:44343/hotel/getroomdetails?room_type=${roomType}&check_in_date=${arrivalDate}&check_out_date=${departureDate}`)
     .then((resp)=>{
-      setAvailabilty(resp.data)
+      if(resp.status == 200){
+        setAvailabilty(resp.data)
+      }
     })
-
+    if(availability)
     alert('Seat Available : ' + availability[0].total_num_room)
+  }
   };
   
   
@@ -87,7 +92,7 @@ const Home = () => {
         <div className="availability-form" style={{ backgroundColor: 'grey', height: '90px', display: 'flex', fontSize: '22px', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ marginLeft: '-220px' }}>
             <label htmlFor="arrivalDate" style={{ color: 'black', fontWeight: 'bold', height: '40px', padding: '0px', display: 'inline-block' }}>Arrival Date:</label>
-            <input type="date" id="arrivalDate" style={{ width: '180px', height: '30px', borderRadius: '30px 30px 30px 30px' }} name="arrivalDate"  onChange={(e) => setArrivalDate(e.target.value)} min={getCurrentDate()} />
+            <input type="date" id="arrivalDate" style={{ width: '180px', height: '30px', borderRadius: '30px 30px 30px 30px' }} name="arrivalDate" value={arrivalDate}  onChange={(e) => setArrivalDate(e.target.value)} min={getCurrentDate()} />
           </div>
           <div className='xx' style={{ marginLeft: '30px' }}>
             <label htmlFor="departureDate" style={{ color: 'black', fontWeight: 'bold', height: '35px', padding: '5px', display: 'inline-block' }}>Departure Date:</label>

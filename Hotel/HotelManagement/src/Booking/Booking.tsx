@@ -37,6 +37,7 @@ const Booking = () => {
     },[location])
 
     function handleBooking(){
+     
       axios.get(`https://localhost:44343/hotel/getroomdetails?room_type=${roomType}&check_in_date=${checkInDate}&check_out_date=${checkOutDate}`)
     .then((resp)=>{
       if(resp.status == 200 && resp.data)
